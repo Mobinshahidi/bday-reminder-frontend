@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import FingerprintJS from "@fingerprintjs/fingerprintjs";
 import Alert from "./Alert";
-import config from "./config";
 import persianDate from "persian-date";
 import { toast } from "react-toastify";
 
@@ -40,7 +39,7 @@ const BirthdayReminder = () => {
 
         // Fetch initial birthdays
         const response = await fetch(
-          `${config.apiUrl}/api/birthdays/${result.visitorId}`
+          `${import.meta.env.VITE_API_URL}/api/birthdays/${result.visitorId}`
         );
         if (!response.ok) throw new Error("Failed to fetch birthdays");
         const data = await response.json();
@@ -124,7 +123,7 @@ const BirthdayReminder = () => {
   const fetchBirthdays = async (visitorId) => {
     try {
       const response = await fetch(
-        `${config.apiUrl}/api/birthdays/${visitorId}`
+        `${import.meta.env.VITE_API_URL}/api/birthdays/${visitorId}`
       );
       if (!response.ok) throw new Error("Failed to fetch birthdays");
       const data = await response.json();
@@ -146,24 +145,27 @@ const BirthdayReminder = () => {
     }
 
     try {
-      const response = await fetch(`${config.apiUrl}/api/birthdays`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: newBirthday.name,
-          month,
-          day,
-          fingerprint,
-        }),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/birthdays`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: newBirthday.name,
+            month,
+            day,
+            fingerprint,
+          }),
+        }
+      );
 
       if (!response.ok) throw new Error("Failed to add birthday");
 
       // Fetch updated birthdays
       const updatedResponse = await fetch(
-        `${config.apiUrl}/api/birthdays/${fingerprint}`
+        `${import.meta.env.VITE_API_URL}/api/birthdays/${fingerprint}`
       );
       const updatedData = await updatedResponse.json();
       setBirthdays(updatedData);
@@ -184,7 +186,7 @@ const BirthdayReminder = () => {
     e.preventDefault();
     try {
       const response = await fetch(
-        `${config.apiUrl}/api/birthdays/${editingId}`,
+        `${import.meta.env.VITE_API_URL}/api/birthdays/${editingId}`,
         {
           method: "PUT",
           headers: {
@@ -215,9 +217,12 @@ const BirthdayReminder = () => {
     if (!confirm("Are you sure you want to delete this birthday?")) return;
 
     try {
-      const response = await fetch(`${config.apiUrl}/api/birthdays/${id}`, {
-        method: "DELETE",
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/birthdays/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
 
       if (!response.ok) throw new Error("Failed to delete birthday");
 
@@ -275,16 +280,19 @@ const BirthdayReminder = () => {
           throw new Error("Invalid data format");
         }
 
-        const response = await fetch(`${config.apiUrl}/api/birthdays/import`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            birthdays: importedData,
-            fingerprint,
-          }),
-        });
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/birthdays/import`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              birthdays: importedData,
+              fingerprint,
+            }),
+          }
+        );
 
         if (!response.ok) throw new Error("Import failed");
 
