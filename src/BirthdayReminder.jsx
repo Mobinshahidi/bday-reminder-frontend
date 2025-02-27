@@ -55,7 +55,6 @@ const BirthdayReminder = () => {
 
   useEffect(() => {
     if (birthdays && birthdays.length > 0) {
-      console.log("Birthdays updated:", birthdays);
       checkUpcomingBirthdays();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -93,10 +92,6 @@ const BirthdayReminder = () => {
     const nextWeek = new persianDate().add("days", 7);
     const nextWeekMonth = nextWeek.month();
     const nextWeekDay = nextWeek.date();
-
-    console.log(`Today: ${todayMonth}/${todayDay}`);
-    console.log(`Tomorrow: ${tomorrowMonth}/${tomorrowDay}`);
-    console.log(`Next week: ${nextWeekMonth}/${nextWeekDay}`);
 
     birthdays.forEach((birthday) => {
       // Today's birthday
