@@ -32,4 +32,10 @@ export default defineConfig({
       },
     }),
   ],
+  server: {
+    host: true,
+    strictPort: true,
+    port: 4173,
+    allowedHosts: ["bday-reminder.mobinshahidi.ir"],
+  },
 });
